@@ -1,0 +1,53 @@
+﻿@using RandevuSistemi.Models.Entities
+@model List<Hizmetler>
+
+@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<!-- Bootstrap stil verildi -->
+<header class="jumbotron text-center text-blue py-5">
+    <h1 class="display-4">SauSerdivan Hastanesi</h1>
+    <p class="lead">Kaliteli sağlık hizmeti sunan öncü hastane</p>
+</header>
+
+<div class="container py-5">
+    <section id="hakkimizda">
+        <h2 class="text-center">Hakkımızda</h2>
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">SauSerdivan Hastanesi olarak, yıllardır kaliteli sağlık hizmeti sunuyoruz. Alanında uzman doktorlarımız ve modern teknoloji ile donatılmış tesislerimizle hastalarımıza en iyi hizmeti sunmayı amaçlıyoruz.</p>
+                        <p class="card-text">Web sitemizde doktorlarımızı ve polikliniklerimizi görüntüleyebilir. Uygun randevu alabilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hizmetler" class="py-5 mt-5">
+        <h2 class="text-center">Hizmetler</h2>
+        <div class="list-group">
+            @foreach (var item in Model)
+            {
+                <a href="#" class="list-group-item list-group-item-action">@item.HizmetAdi</a>
+            }
+        </div>
+    </section>
+
+    <section id="iletisim" class="py-5 mt-5">
+        <h2 class="text-center">İletişim</h2>
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">Adres: Esentepe Mahallesi, Örnek Sokak No: 123, Serdivan/Sakarya</p>
+                        <p class="card-text">Telefon: 123-456-7890</p>
+                        <p class="card-text">E-posta: info@sauserdivan.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -11,8 +11,8 @@ using RandevuSistemi.Models;
 namespace RandevuSistemi.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230807134504_newTab")]
-    partial class newTab
+    [Migration("20230807170630_semi")]
+    partial class semi
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,9 +53,8 @@ namespace RandevuSistemi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PoliklinikId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PoliklinikId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

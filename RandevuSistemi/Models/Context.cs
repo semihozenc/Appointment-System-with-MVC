@@ -8,7 +8,7 @@ namespace RandevuSistemi.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost; Database=RandevuSistemi; User Id=SA; Password=reallyStrongPwd123; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=RandevuSistemi2;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
 
         public DbSet<AnaBilimDali> AnaBilimDallari { get; set; }

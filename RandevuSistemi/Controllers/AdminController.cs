@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RandevuSistemi.Models;
+using RandevuSistemi.Models.Dto;
 using RandevuSistemi.Models.Entities;
 
 namespace HayvanBarinagi.Controllers

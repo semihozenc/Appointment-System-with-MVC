@@ -5,7 +5,7 @@
 namespace RandevuSistemi.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class semi : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,11 +30,24 @@ namespace RandevuSistemi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AdSoyad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PoliklinikId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PoliklinikId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Doktorlar", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hizmetler",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HizmetAdi = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hizmetler", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,6 +105,9 @@ namespace RandevuSistemi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Doktorlar");
+
+            migrationBuilder.DropTable(
+                name: "Hizmetler");
 
             migrationBuilder.DropTable(
                 name: "Poliklinikler");

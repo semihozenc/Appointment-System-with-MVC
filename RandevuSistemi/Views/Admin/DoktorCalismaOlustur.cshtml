@@ -1,0 +1,14 @@
+﻿@using RandevuSistemi.Models.Entities;
+@model Doktor
+
+<h1>Çalışma Saatleri Atayacağınız Doktor: @Model.AdSoyad</h1>
+
+@using (Html.BeginForm("DoktorCalismaOlustur", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="calismaZamani">Çalışma Zamanı:</label>
+        <input type="datetime-local" id="calismaZamani" name="CalismaZamani" class="form-control mt-2" />
+    </div>
+    <input type="hidden" id="doktorId" name="DoctorId" value="@Model.Id" />
+    <button type="submit" class="btn btn-primary mt-4 float-end">Çalışma Saati Oluştur</button>
+}

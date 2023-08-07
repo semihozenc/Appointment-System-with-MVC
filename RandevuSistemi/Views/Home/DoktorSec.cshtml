@@ -1,0 +1,19 @@
+﻿@model List<SelectListItem>
+
+<h2 class="text-center">Doktor Tarih Seç</h2>
+@using (Html.BeginForm("DoktorSec", "Home", FormMethod.Post))
+{
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form>
+                <div class="mb-3">
+                    <label for="id" class="form-label">Mevcut Çalışma Saatleri</label>
+                    @Html.DropDownList("id", Model, "-- Seçiniz --", new { @class = "form-control" })
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Seç</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

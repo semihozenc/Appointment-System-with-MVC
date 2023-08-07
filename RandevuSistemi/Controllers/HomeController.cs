@@ -151,6 +151,31 @@ public class HomeController : Controller
     }
 
     [HttpGet]
+    public IActionResult DoktorSec(int Id)
+    {
+        var doktorCalisma = context.CalismaSaatleri.Where(x => x.DoctorId == Id)
+            .Select(h => new SelectListItem
+        {
+            Value = h.Id.ToString(),
+            Text = h.CalismaZamani.ToString()
+        }).ToList();
+
+        return View(doktorCalisma);
+    }
+
+    //[HttpPost]
+    //public IActionResult DoktorSec(IFormCollection form)
+    //{
+    //    int  = form["id"];
+
+    //    var newRandevu = new Randevu
+    //    {
+    //        randevuSaati = calismaSaatleri.CalismaZamani,
+    //        UserId = calismaSaatleri.DoctorId
+    //    }
+    //}
+
+    [HttpGet]
     public IActionResult UyeOl()
     {
         return View();

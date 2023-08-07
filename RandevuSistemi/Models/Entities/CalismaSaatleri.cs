@@ -7,7 +7,5 @@
         public int DoctorId { get; set; }
 
         public DateTime CalismaZamani { get; set; }
-
-
     }
 }

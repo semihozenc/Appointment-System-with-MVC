@@ -30,7 +30,6 @@
     <Folder Include="Resources\Views\" />
     <Folder Include="Resources\Views\Shared\" />
     <Folder Include="Resources\Views\Home\" />
-    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Views\Home\Index.tr.resx">

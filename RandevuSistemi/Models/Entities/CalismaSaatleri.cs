@@ -1,4 +1,6 @@
-﻿namespace RandevuSistemi.Models.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RandevuSistemi.Models.Entities
 {
     public class CalismaSaatleri
     {
@@ -8,6 +10,6 @@
 
         public DateTime CalismaZamani { get; set; }
 
-
+        public string DoctorAdi { get; set; }
     }
 }

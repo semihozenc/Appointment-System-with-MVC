@@ -1,6 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using RandevuSistemi.Models.Entities
+@model List<Randevu>
 
+<a class="btn btn-primary float-end mb-2 mt-2" asp-area="" asp-controller="Admin" asp-action="DoktorEkle">Doktor Ekle</a>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">DoctorAdi</th>
+            <th scope="col">Hasta Adı</th>
+            <th scope="col">Randevu Zamanı</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DoctorAdi</td>
+                <td>@item.UserName</td>
+                <td>@item.RandevuSaati</td>
+            </tr>
+        }
+    </tbody>
+</table>

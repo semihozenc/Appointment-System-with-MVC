@@ -268,17 +268,67 @@ namespace HayvanBarinagi.Controllers
             return RedirectToAction("Doktor", "Admin");
         }
 
+        [HttpPost]
+        public IActionResult CalismaSaatiOlustur(int Id, DateTime CalismaSaati)
+        {
+            if (AdminControl())
+            {
+                var doctor = context.Doktorlar.Find(Id);
+
+
+                if (doctor != null)
+                {
+                    var yeniCalismaSaati = new CalismaSaatleri
+                    {
+                        DoctorId = doctor.Id,
+                        CalismaZamani = CalismaSaati,
+                        DoctorAdi = doctor.AdSoyad
+                        
+                    };
+
+                    context.CalismaSaatleri.Add(yeniCalismaSaati);
+                    context.SaveChanges();
+
+                    return RedirectToAction("Doktor", "Admin");
+                }
+            }
+
+            // Başarısız durumda başka bir sayfaya yönlendirme yapabilirsiniz.
+            return RedirectToAction("Index", "Home");
+        }
+        
+
+
+
+         [HttpGet]
+        public IActionResult DoktorCalismaOlustur(int Id)
+        {
+            if (AdminControl())
+            {
+                var doctor = context.Doktorlar.Find(Id); 
+                if (doctor != null)
+                {
+                    return View(doctor);
+                }
+            }
+            // Başarısız durumda başka bir sayfaya yönlendirme yapabilirsiniz.
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Randevu()
         {
             if (AdminControl())
             {
-                return View();
+                var randevular = context.Randevular.ToList();
+                return View(randevular);
             }
             else
             {
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
 
     }
 }

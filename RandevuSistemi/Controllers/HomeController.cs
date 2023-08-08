@@ -9,12 +9,16 @@ using RandevuSistemi.Models.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RandevuSistemi.Models.Dto;
+using System.Globalization;
 
 namespace RandevuSistemi.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+
+    //public Doktor RandevuAlinanDoktor;
+
 
     public HomeController(ILogger<HomeController> logger)
     {
@@ -130,7 +134,7 @@ public class HomeController : Controller
     {
         int selectedPoliklinikId = Convert.ToInt32(form["id"]);
 
-        var polikliningeGoreDoktorlar = context.Doktorlar
+        var poliklinigeGoreDoktorlar = context.Doktorlar
             .Where(x => x.PoliklinikId == selectedPoliklinikId)
             .Select(d => new SelectListItem
             {
@@ -139,7 +143,7 @@ public class HomeController : Controller
             })
             .ToList();
 
-        ViewBag.Doktorlar = polikliningeGoreDoktorlar;
+        ViewBag.Doktorlar = poliklinigeGoreDoktorlar;
 
         var poliklinikListesi = context.Poliklinikler.Select(h => new SelectListItem
         {
@@ -149,6 +153,58 @@ public class HomeController : Controller
 
         return View(poliklinikListesi);
     }
+
+    [HttpGet]
+    public IActionResult DoktorSec(int Id)
+    {
+        var doktorCalisma = context.CalismaSaatleri.Where(x => x.DoctorId == Id)
+            .ToList();
+
+        var model = new Tuple<List<CalismaSaatleri>, int>(doktorCalisma, Id);
+
+        return View(model);
+    }
+
+    public Doktor getDoctorValue(int Id)
+    {
+        var RandevuAlinanDoktor = context.Doktorlar.Where(x=> x.Id == Id).FirstOrDefault();
+        return RandevuAlinanDoktor;
+    }
+
+    [HttpPost]
+    public IActionResult RandevuOlustur(int doctorId, string selectedCardDate)
+    {
+        var currentUser = context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+        //randevu alınan doktoru idsine göre bul
+        var randevuAlinanDoktor = getDoctorValue(doctorId);
+
+        //randevu saatini al
+        DateTime randevuSaati = DateTime.ParseExact(selectedCardDate, "yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+
+        //Doktorun id si ve çalışma saati veritabanında varsa yani böyle bir doktor varsa bunu değişkene ata çünk randevu alınca bunu kaldırmamız gerekecek.
+        var calismaSaatiniBul = context.CalismaSaatleri.ToList().Where(x=> x.DoctorId == doctorId && x.CalismaZamani == randevuSaati).FirstOrDefault();
+        
+
+        var yeniRandevu = new Randevu
+        {
+            UserId = currentUser.Id,
+            UserName = User.Identity.Name,
+            RandevuSaati = randevuSaati,
+            DoctorAdi = randevuAlinanDoktor.AdSoyad,
+            DoctorId = randevuAlinanDoktor.Id
+        };
+
+        context.Randevular.Add(yeniRandevu);
+        if(calismaSaatiniBul != null)
+        context.CalismaSaatleri.Remove(calismaSaatiniBul);
+
+        context.SaveChanges();
+
+        return RedirectToAction("Index", "Home");
+    }
+
+
 
     [HttpGet]
     public IActionResult UyeOl()

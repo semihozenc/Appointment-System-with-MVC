@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RandevuSistemi.Models;
 
@@ -11,9 +12,11 @@ using RandevuSistemi.Models;
 namespace RandevuSistemi.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20230807175113_nowbi")]
+    partial class nowbi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,10 +52,6 @@ namespace RandevuSistemi.Migrations
 
                     b.Property<DateTime>("CalismaZamani")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DoctorAdi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
@@ -127,24 +126,15 @@ namespace RandevuSistemi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DoctorAdi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RandevuSaati")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("randevuSaatiId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("randevuSaatiId");
 
                     b.ToTable("Randevular");
                 });
@@ -176,6 +166,17 @@ namespace RandevuSistemi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("RandevuSistemi.Models.Entities.Randevu", b =>
+                {
+                    b.HasOne("RandevuSistemi.Models.Entities.CalismaSaatleri", "randevuSaati")
+                        .WithMany()
+                        .HasForeignKey("randevuSaatiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("randevuSaati");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,5 +17,6 @@ namespace RandevuSistemi.Models
         public DbSet<Poliklinik> Poliklinikler { get; set; }
         public DbSet<Randevu> Randevular { get; set; }
         public DbSet<Hizmetler> Hizmetler { get; set; }
+        public DbSet<CalismaSaatleri> CalismaSaatleri { get; set; }
     }
 }

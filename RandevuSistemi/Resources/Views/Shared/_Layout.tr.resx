@@ -85,4 +85,7 @@
   <data name="RandevuAl" xml:space="preserve">
     <value>Randevu Al</value>
   </data>
+    <data name="Randevularim" xml:space="preserve">
+    <value>Randevularım</value>
+  </data>
 </root>

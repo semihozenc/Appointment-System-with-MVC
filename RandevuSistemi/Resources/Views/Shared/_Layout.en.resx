@@ -85,4 +85,7 @@
   <data name="RandevuAl" xml:space="preserve">
     <value>Make an appointment</value>
   </data>
+  <data name="Randevularim" xml:space="preserve">
+    <value>My appointments</value>
+  </data>
 </root>

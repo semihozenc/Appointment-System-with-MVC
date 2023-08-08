@@ -236,7 +236,28 @@ public class HomeController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    public IActionResult RandevuIptal(int Id)
+    {
+        var silinecekRandevu = context.Randevular.Find(Id);
 
+        if (silinecekRandevu != null)
+        {
+            context.Remove(silinecekRandevu);
+            context.SaveChanges();
+            return RedirectToAction("RandevulariGoruntule", "Home");
+        }
+        else
+        {
+            return RedirectToAction("RandevulariGoruntule", "Home");
+        }
+    }
+
+    [Authorize]
+    public IActionResult RandevulariGoruntule()
+    {
+        var aktifRandevular = context.Randevular.Where(x => x.UserName == User.Identity.Name).ToList(); // aktif kullanıcının adıyla bir randevu var mı.
+        return View(aktifRandevular);
+    }
 
     [HttpGet]
     public IActionResult UyeOl()
@@ -265,7 +286,6 @@ public class HomeController : Controller
     {
         if (!string.IsNullOrEmpty(returnUrl))
         {
-            TempData["LoginGerekli"] = "Bu sayfaya erişebilmek için giriş yapmalısınız.";
             TempData["ReturnUrl"] = returnUrl;
         }
         return View();

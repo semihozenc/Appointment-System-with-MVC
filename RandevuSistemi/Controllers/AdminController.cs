@@ -108,6 +108,43 @@ namespace HayvanBarinagi.Controllers
             return RedirectToAction("Index", "Admin");
         }
 
+        //Hizmetleri Admin Panelinde Görüntüle
+        public IActionResult Hizmetler()
+        {
+            if (AdminControl())
+            {
+                var tumHizmetler = context.Hizmetler.ToList();
+                return View(tumHizmetler);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Admin");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Hizmetler(string hizmetAdi)
+        {
+            var hizmetEkle = new Hizmetler
+            {
+                HizmetAdi = hizmetAdi
+            };
+
+            context.Hizmetler.Add(hizmetEkle);
+            context.SaveChanges();
+
+            return RedirectToAction("Hizmetler", "Admin");
+        }
+
+        public IActionResult HizmetSil(int Id)
+        {
+            var hizmet = context.Hizmetler.Find(Id);
+            context.Hizmetler.Remove(hizmet);
+            context.SaveChanges();
+            return RedirectToAction("Hizmetler", "Admin");
+        }
+
+
         public IActionResult Poliklinik()
         {
             if (AdminControl())
@@ -328,7 +365,21 @@ namespace HayvanBarinagi.Controllers
             }
         }
 
+        public IActionResult RandevuSil(int Id)
+        {        
+          var silinecekRandevu = context.Randevular.Find(Id);
 
+          if (silinecekRandevu != null)
+                {
+                    context.Remove(silinecekRandevu);
+                    context.SaveChanges();
+                    return RedirectToAction("Randevu", "Admin");
+                }
+                else {
+                    return RedirectToAction("Randevu", "Admin");
+                }
+            
+        }
 
     }
 }

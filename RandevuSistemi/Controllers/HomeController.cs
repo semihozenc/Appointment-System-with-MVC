@@ -17,8 +17,6 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
-    //public Doktor RandevuAlinanDoktor;
-
 
     public HomeController(ILogger<HomeController> logger)
     {
@@ -189,7 +187,7 @@ public class HomeController : Controller
         var yeniRandevu = new Randevu
         {
             UserId = currentUser.Id,
-            UserName = User.Identity.Name,
+            UserName = currentUser.AdSoyad,
             RandevuSaati = randevuSaati,
             DoctorAdi = randevuAlinanDoktor.AdSoyad,
             DoctorId = randevuAlinanDoktor.Id

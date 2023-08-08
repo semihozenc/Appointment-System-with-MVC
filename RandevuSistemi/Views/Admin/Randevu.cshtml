@@ -1,14 +1,14 @@
 ﻿@using RandevuSistemi.Models.Entities
 @model List<Randevu>
 
-<a class="btn btn-primary float-end mb-2 mt-2" asp-area="" asp-controller="Admin" asp-action="DoktorEkle">Doktor Ekle</a>
 
 <table class="table">
     <thead class="thead-light">
         <tr>
-            <th scope="col">DoctorAdi</th>
+            <th scope="col">Doktor Adı</th>
             <th scope="col">Hasta Adı</th>
             <th scope="col">Randevu Zamanı</th>
+            <th scope="col">Randevuyu Sil</th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +18,9 @@
                 <td>@item.DoctorAdi</td>
                 <td>@item.UserName</td>
                 <td>@item.RandevuSaati</td>
+                <td>
+                    <a class="btn btn-danger" asp-area="" asp-controller="Admin" asp-action="RandevuSil" asp-route-id="@item.Id">Sil</a>
+                </td>
             </tr>
         }
     </tbody>

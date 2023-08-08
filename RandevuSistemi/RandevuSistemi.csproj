@@ -26,27 +26,6 @@
     <None Remove="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Resources\Views\" />
     <Folder Include="Resources\Views\Shared\" />
-    <Folder Include="Resources\Views\Home\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Views\Home\Index.tr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.tr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Views\Home\Index.en.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Index.en.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Resources\Views\Home\Index.tr.Designer.cs">
-      <DependentUpon>Index.tr.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Views\Home\Index.en.Designer.cs">
-      <DependentUpon>Index.en.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

@@ -4,12 +4,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using RandevuSistemi.Models;
 using RandevuSistemi.Models.Dto;
 using RandevuSistemi.Models.Entities;
+using System.Globalization;
 
 namespace HayvanBarinagi.Controllers
 {
+    
+
     [Authorize]
     public class AdminController : Controller
     {
+
+        Context context = new Context();
+
+        // Admin kontrolü yapıyoruz. Kullanıcı Adı admin'e uyuyor mu ?
         public bool AdminControl()
         {
             if (User.Identity.IsAuthenticated) 
@@ -32,8 +39,9 @@ namespace HayvanBarinagi.Controllers
             }
         }
 
-        Context context = new Context();
-
+        // Admin controlleri çalıştığında Indexi getir.
+        // Index'te Ana bilim Dallarını listele
+        // Admin değilse kullanıcı sayfasına at
         public IActionResult Index()
         {
             if (AdminControl())
@@ -46,7 +54,7 @@ namespace HayvanBarinagi.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
+      
         [HttpGet]
         public IActionResult AnaBilimDaliEkle()
         {
@@ -60,18 +68,19 @@ namespace HayvanBarinagi.Controllers
             }
         }
 
+        // Ana Bilim dalı ekleme
         [HttpPost]
         public IActionResult AnaBilimDaliEkle(AnaBilimDali anaBilimDali)
         {
             var newAnaBilimDali = new AnaBilimDali
             {
-                Name = anaBilimDali.Name
+                Name = anaBilimDali.Name // parametreden gelen değer ile yeni nesne oluştur
             };
 
-            context.AnaBilimDallari.Add(newAnaBilimDali);
-            context.SaveChanges();
+            context.AnaBilimDallari.Add(newAnaBilimDali); // bu nesneyi tabloya ekle
+            context.SaveChanges(); // Tabloyu kaydet
 
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index", "Admin"); // Admin/Index'e geri dön
         }
 
         [HttpGet]
@@ -99,6 +108,7 @@ namespace HayvanBarinagi.Controllers
             return RedirectToAction("Index", "Admin");
         }
 
+        // Ana bilim dalı silme
         public IActionResult AnaBilimDaliSil(int Id)
         {
             var anaBilimDali = context.AnaBilimDallari.Find(Id);
@@ -122,6 +132,7 @@ namespace HayvanBarinagi.Controllers
             }
         }
 
+        // Ana bilim dalında olduğu gibi Hizmet ekledik.
         [HttpPost]
         public IActionResult Hizmetler(string hizmetAdi)
         {
@@ -136,6 +147,7 @@ namespace HayvanBarinagi.Controllers
             return RedirectToAction("Hizmetler", "Admin");
         }
 
+        // Gelen id'değerine göre tablodan Id'si parametreden gelen hizmeti bul ve kaldır.
         public IActionResult HizmetSil(int Id)
         {
             var hizmet = context.Hizmetler.Find(Id);
@@ -296,6 +308,7 @@ namespace HayvanBarinagi.Controllers
             return RedirectToAction("Doktor", "Admin");
         }
 
+        // Admin panelinden gelen doktor id sine göre ilgili doktoru bulma ve kaldırma.
         public IActionResult DoktorSil(int Id)
         {
             var doktor = context.Doktorlar.Find(Id);
@@ -305,22 +318,51 @@ namespace HayvanBarinagi.Controllers
             return RedirectToAction("Doktor", "Admin");
         }
 
+        //Doktorlar için çalışma saati oluşturalım ki , hastalar randevuları görüntüleyebilsin.
+        //[HttpPost]
+        //public IActionResult CalismaSaatiOlustur(int Id, DateTime CalismaSaati)
+        //{
+        //    if (AdminControl())
+        //    {
+        //        var doctor = context.Doktorlar.Find(Id); // View'dan gelen seçilen doktor id'sine göre doktoru bulma
+
+        //        if (doctor != null) // doktor nesnesi varsa yani null değilse
+        //        {
+        //            var yeniCalismaSaati = new CalismaSaatleri // yeni çalışma saati oluştur
+        //            {
+        //                DoctorId = doctor.Id,
+        //                CalismaZamani = CalismaSaati,   // Doktorun Adı ve hangi saatilerin müsait olduğu çalışma saatleri tablosuna eklemek için nesne üret.
+        //                DoctorAdi = doctor.AdSoyad
+
+        //            };
+
+        //            context.CalismaSaatleri.Add(yeniCalismaSaati);  // üretilen nesneyi veritabanına ekle
+        //            context.SaveChanges(); // veritabanı değişikliklerini kaydet
+
+        //            return RedirectToAction("Doktor", "Admin");
+        //        }
+        //    }
+
+        //    // Başarısız durumda başka bir sayfaya yönlendirme yapabilirsiniz.
+        //    return RedirectToAction("Index", "Home");
+        //}
+
         [HttpPost]
-        public IActionResult CalismaSaatiOlustur(int Id, DateTime CalismaSaati)
+        public IActionResult CalismaSaatiOlustur(int Id, string CalismaZamani)
         {
             if (AdminControl())
             {
                 var doctor = context.Doktorlar.Find(Id);
 
-
                 if (doctor != null)
                 {
+                    DateTime calismaZamani = DateTime.ParseExact(CalismaZamani, "yyyy-MM-ddTHH:mm", CultureInfo.InvariantCulture);
+
                     var yeniCalismaSaati = new CalismaSaatleri
                     {
                         DoctorId = doctor.Id,
-                        CalismaZamani = CalismaSaati,
+                        CalismaZamani = calismaZamani,
                         DoctorAdi = doctor.AdSoyad
-                        
                     };
 
                     context.CalismaSaatleri.Add(yeniCalismaSaati);
@@ -328,16 +370,27 @@ namespace HayvanBarinagi.Controllers
 
                     return RedirectToAction("Doktor", "Admin");
                 }
+                else
+                {
+                    // Doctor nesnesi null ise burada uygun bir sonuç döndürülmeli
+                    // Örneğin, hata mesajı veya uygun bir HTTP durum kodu döndürülebilir.
+                    return RedirectToAction("HataSayfasi", "Admin");
+                }
             }
-
-            // Başarısız durumda başka bir sayfaya yönlendirme yapabilirsiniz.
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                // Admin kontrolü geçilemediyse burada uygun bir sonuç döndürülmeli
+                // Örneğin, hata mesajı veya uygun bir HTTP durum kodu döndürülebilir.
+                return RedirectToAction("HataSayfasi", "Admin");
+            }
         }
-        
 
 
 
-         [HttpGet]
+
+
+
+        [HttpGet]
         public IActionResult DoktorCalismaOlustur(int Id)
         {
             if (AdminControl())

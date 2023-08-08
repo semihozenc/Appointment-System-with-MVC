@@ -7,7 +7,7 @@
 
 <header class="text-center py-4">
     <h1>SauSerdivan Hastanesi</h1>
-    <p class="lead">Poliklinikler ve Doktorları</p>
+    <p class="lead">Poliklinkler ve Doktorları</p>
 </header>
 
 @foreach (var item in Model)
@@ -21,12 +21,5 @@
             <p class="mb-1">@item.doctor.AdSoyad</p>
         </a>
     </div>
-    <style>
-        .list-group-item:hover {
-            background-color: #bd5d38; /* Burada istediğiniz arka plan rengini belirtebilirsiniz */
-            cursor: pointer;
-        }
-    </style>
 }
-
 

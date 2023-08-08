@@ -91,6 +91,32 @@ public class HomeController : Controller
         }
     }
 
+    public IActionResult DoktorlarVePoliklinik(int anaBilimDaliId)
+    {
+        var tumDoktorlar = context.Doktorlar.ToList();
+        var tumPoliklinikler = context.Poliklinikler.ToList();
+
+        var doktorlarBuAnabilimDalinda = tumDoktorlar.Where(d => tumPoliklinikler.Any(p => p.AnaBilimDaliId == anaBilimDaliId && p.Id == d.PoliklinikId)).ToList();
+
+        var poliklinikModelList = new List<DoktorVePoliklinikAdi>();
+
+        foreach (var doktor in doktorlarBuAnabilimDalinda)
+        {
+            var poliklinikler = tumPoliklinikler.FirstOrDefault(abd => abd.Id == doktor.PoliklinikId);
+
+            var doktorVePoliklinik = new DoktorVePoliklinikAdi
+            {
+                doctor = doktor,
+                PoliklinikAdi = poliklinikler?.Name
+            };
+
+            poliklinikModelList.Add(doktorVePoliklinik);
+        }
+
+        return View(poliklinikModelList);
+    }
+
+
     public IActionResult Doktorlar()
     {
         var tumDoktorlar = context.Doktorlar.ToList();
@@ -158,11 +184,19 @@ public class HomeController : Controller
         var doktorCalisma = context.CalismaSaatleri.Where(x => x.DoctorId == Id)
             .ToList();
 
-        var model = new Tuple<List<CalismaSaatleri>, int>(doktorCalisma, Id);
-
-        return View(model);
+        if (doktorCalisma == null || doktorCalisma.Count == 0) // Doktorun uygun randevu saati yoksa
+        {
+            ViewBag.Mesaj = "Doktorun uygun randevusu bulunamadı.";
+        }
+        else
+        {
+            var model = new Tuple<List<CalismaSaatleri>, int>(doktorCalisma, Id);
+            return View(model);
+        }
+        return View(); // Eğer doktorun uygun randevusu yoksa, hemen mesajı yazdırmak için sayfayı döndürüyoruz.
     }
 
+    // idsine göre gelen doktoru bulan döndüren metod 
     public Doktor getDoctorValue(int Id)
     {
         var RandevuAlinanDoktor = context.Doktorlar.Where(x=> x.Id == Id).FirstOrDefault();

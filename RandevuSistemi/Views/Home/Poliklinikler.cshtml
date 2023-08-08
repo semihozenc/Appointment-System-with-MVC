@@ -10,10 +10,15 @@
     <p class="lead">Ana Bilim Dalları ve Poliklinikler</p>
 </header>
 
-@foreach (var item in Model)
+@{
+    // Poliklinikleri Ana Bilim Dalı Adına Göre Alfabetik Sıralama
+    var sortedPoliklinikler = Model.OrderBy(item => item.AnaBilimDaliAdi).ToList();
+}
+
+@foreach (var item in sortedPoliklinikler)
 {
     <div class="list-group mb-3">
-        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+        <a href="@Url.Action("DoktorlarVePoliklinik", "Home", new { anaBilimDaliId = item.poliklinik.AnaBilimDaliId })" class="list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">@(item.AnaBilimDaliAdi) Ana Bilim Dalı</h5>
             </div>
@@ -22,3 +27,10 @@
         </a>
     </div>
 }
+
+<style>
+    .list-group-item:hover {
+        background-color: #bd5d38; /* Burada istediğiniz arka plan rengini belirtebilirsiniz */
+        cursor: pointer;
+    }
+</style>
